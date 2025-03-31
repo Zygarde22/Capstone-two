@@ -43,3 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchBreweries();
 });
 
+document.getElementById('menu-toggle').addEventListener('click', function () {
+    const menu = document.getElementById('menu');
+    const isExpanded = this.getAttribute("aria-expanded") === "true";
+    this.setAttribute("aria-expanded", !isExpanded);
+    menu.classList.toggle('hidden');
+});
