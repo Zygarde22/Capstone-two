@@ -35,7 +35,7 @@ async function sendMessage() {
 
         const data = await response.json();
         console.log(data)
-        
+
         if (data.message) {
             displayMessage(data.message, "bot");
             saveToLocalStorage("bot", data.message); // Save bot response
@@ -50,38 +50,4 @@ async function sendMessage() {
     userInputField.value = ""; // Clear input field
 }
 
-function displayMessage(message, sender) {
-    const chatContainer = document.getElementById("chat-container");
-    const messageElement = document.createElement("div");
-    messageElement.classList.add("message", sender);
-    messageElement.textContent = message;
-    chatContainer.appendChild(messageElement);
-    chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to the bottom
-}
-
-// Save messages to localStorage
-function saveToLocalStorage(sender, message) {
-    try {
-        const messages = JSON.parse(localStorage.getItem("chatHistory")) || [];
-        // Keep only the last 50 messages
-        if (messages.length >= 50) {
-            messages.shift(); // Remove the oldest message
-        }
-        messages.push({ sender, message });
-        localStorage.setItem("chatHistory", JSON.stringify(messages));
-    } catch (error) {
-        console.error("Error saving to localStorage:", error);
-    }
-}
-
-// Load messages from localStorage
-function loadChatHistory() {
-    const messages = JSON.parse(localStorage.getItem("chatHistory")) || [];
-    messages.forEach(({ sender, message }) => displayMessage(message, sender));
-}
-
-// Optional: Clear chat button
-document.getElementById("clear-chat")?.addEventListener("click", () => {
-    localStorage.removeItem("chatHistory");
-    document.getElementById("chat-container").innerHTML = "";
-});
+ 
