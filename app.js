@@ -25,16 +25,17 @@ async function sendMessage() {
     displayMessage("Thinking...", "bot");
 
     try {
-        const response = await fetch("http://localhost:3000/chat", { // Ensure correct backend URL
+        const response = await fetch("https://proxy-key-apyd.onrender.com/get-key", { // Ensure correct backend URL
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: userInput }),
+            body: JSON.stringify({ message: "CJBOSCO" }),
         });
 
         if (!response.ok) throw new Error(`Failed to fetch response: ${response.statusText}`);
 
         const data = await response.json();
-
+        console.log(data)
+        
         if (data.message) {
             displayMessage(data.message, "bot");
             saveToLocalStorage("bot", data.message); // Save bot response
