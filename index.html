@@ -4,7 +4,7 @@
 <head>
     <title>Khris' Beer Reviews</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="app.js"></script>
+    <script src="app.js" defer></script> <!-- Ensure the script is loaded after DOM -->
 </head>
 
 <body class="bg-gray-100 text-gray-900">
@@ -38,10 +38,6 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="hidden md:flex space-x-2">
-                    <input type="search" class="border rounded-lg px-3 py-1.5" placeholder="Search for beers...">
-                    <button class="bg-green-500 text-white px-3 py-1.5 rounded-lg hover:bg-green-600">Search</button>
-                </form>
             </div>
         </div>
     </nav>
@@ -76,18 +72,20 @@
     </footer> 
     <!-- Brewery API Content -->
     <div id="brewery-container" class="max-w-7xl mx-auto flex flex-wrap justify-center mt-6 p-4"></div>
-<!--Chatbot-->
+
+    <!--Chatbot-->
     <div id="chat-container" class="fixed right-4 bottom-4 bg-white p-4 shadow-lg rounded-lg w-80" 
-     role="complementary" aria-label="Chatbot">
-    <h3 class="text-lg font-bold mb-2">Chatbot</h3>
-    <div id="chat-messages" class="h-40 overflow-y-auto border p-2 rounded mb-2" 
-         aria-live="polite"></div>
-         <input type="text" id="user-input" class="border rounded w-full px-3 py-1 text-black" 
-         placeholder="Ask me about Beer" aria-label="Chat input">
-    <button id="send-button" class="bg-blue-500 text-black w-full mt-2 py-1 rounded hover:bg-blue-600">
-        Send
-    </button>
-</div>
+         role="complementary" aria-label="Chatbot">
+        <h3 class="text-lg font-bold mb-2">Chatbot</h3>
+        <div id="chat-messages" class="h-40 overflow-y-auto border p-2 rounded mb-2" 
+             aria-live="polite"></div>
+        <input type="text" id="user-input" class="border rounded w-full px-3 py-1 text-black" 
+               placeholder="Ask me about Beer" aria-label="Chat input">
+        <button id="send-button" class="bg-blue-500 text-black w-full mt-2 py-1 rounded hover:bg-blue-600">
+            Send
+        </button>
+        <button id="clear-chat" class="bg-red-500 text-white py-1 px-3 rounded">Clear Chat</button>
+    </div>
 
     <script>
         document.getElementById('menu-toggle').addEventListener('click', function () {
