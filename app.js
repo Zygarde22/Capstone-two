@@ -21,6 +21,9 @@ async function sendMessage() {
     displayMessage(userInput, "user");
     saveToLocalStorage("user", userInput); // Save user message
 
+    // Show loading message while waiting for response
+    displayMessage("Thinking...", "bot");
+
     try {
         const response = await fetch("http://localhost:3000/chat", { // Ensure correct backend URL
             method: "POST",
@@ -28,7 +31,7 @@ async function sendMessage() {
             body: JSON.stringify({ message: userInput }),
         });
 
-        if (!response.ok) throw new Error("Failed to fetch response");
+        if (!response.ok) throw new Error(`Failed to fetch response: ${response.statusText}`);
 
         const data = await response.json();
 
@@ -52,14 +55,22 @@ function displayMessage(message, sender) {
     messageElement.classList.add("message", sender);
     messageElement.textContent = message;
     chatContainer.appendChild(messageElement);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
+    chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to the bottom
 }
 
 // Save messages to localStorage
 function saveToLocalStorage(sender, message) {
-    const messages = JSON.parse(localStorage.getItem("chatHistory")) || [];
-    messages.push({ sender, message });
-    localStorage.setItem("chatHistory", JSON.stringify(messages));
+    try {
+        const messages = JSON.parse(localStorage.getItem("chatHistory")) || [];
+        // Keep only the last 50 messages
+        if (messages.length >= 50) {
+            messages.shift(); // Remove the oldest message
+        }
+        messages.push({ sender, message });
+        localStorage.setItem("chatHistory", JSON.stringify(messages));
+    } catch (error) {
+        console.error("Error saving to localStorage:", error);
+    }
 }
 
 // Load messages from localStorage
