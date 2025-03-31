@@ -1,6 +1,11 @@
 "use strict";
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Page Loaded');
+  
+});
+
+document.addEventListener('DOMContentLoaded', () => {
     const breweryContainer = document.getElementById('brewery-container');
     const apiUrl = 'https://api.openbrewerydb.org/breweries?by_country=united%20states&per_page=3';
 
