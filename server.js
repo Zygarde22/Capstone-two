@@ -3,10 +3,10 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const fs = require("fs");
+const mime = require("mime-types");  // Add mime module to handle file extensions
 const {
   GoogleGenerativeAI,
-  HarmCategory,
-  HarmBlockThreshold,
 } = require("@google/generative-ai");
 
 const app = express();
@@ -59,13 +59,18 @@ app.post("/chat", async (req, res) => {
         if (part.inlineData) {
           // If inline data (such as a file), save it
           const mimeType = part.inlineData.mimeType;
-          const filename = `output_${candidate.index}_${part.index}.${mime.extension(mimeType)}`;
-          require("fs").writeFileSync(filename, Buffer.from(part.inlineData.data, 'base64'));
+          const extension = mime.extension(mimeType);
+          const filename = `output_${candidate.index}_${part.index}.${extension}`;
+          fs.writeFileSync(filename, Buffer.from(part.inlineData.data, 'base64'));
           console.log(`Output written to: ${filename}`);
         }
       }
 
-      botResponse = result.response.text(); // Get the main text response
+      // Get the main text response (if available)
+      if (candidate.content.text) {
+        botResponse = candidate.content.text;
+        break; // Stop after finding the first valid response
+      }
     }
 
     res.json({ message: botResponse });
